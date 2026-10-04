@@ -70,6 +70,26 @@ const robots = noindex || !__INDEXABLE__ ? 'noindex, nofollow' : 'index, follow'
     <meta name="twitter:image:alt" content={imageAlt} />
 
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+    <!-- Arriving through a page transition: the transition is the entrance,
+         so per-element entrance animations are skipped (no double motion). -->
+    <script is:inline>
+      addEventListener('pagereveal', (e) => {
+        if (e.viewTransition) document.documentElement.dataset.vt = '';
+      });
+    </script>
+    <!-- Prefetch same-site pages on hover / touch so navigation is instant
+         (Speculation Rules; ignored by browsers without support). -->
+    <script type="speculationrules" is:inline>
+      {
+        "prefetch": [
+          {
+            "where": { "and": [{ "href_matches": "/*" }, { "not": { "href_matches": "/*.vcf" } }] },
+            "eagerness": "moderate"
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

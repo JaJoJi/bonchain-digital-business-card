@@ -14,6 +14,7 @@ interface Props {
 const { project, detailed = false, index = 0 } = Astro.props;
 const p = project.data;
 const galleryId = `gallery-${project.id}`;
+const logoVt = `view-transition-name: project-logo-${project.id}`;
 const coverSizes = '(min-width: 1120px) 360px, (min-width: 720px) 45vw, 92vw';
 
 const statusLabel = {
@@ -67,9 +68,9 @@ const links = [
   <div class="head">
     {
       p.logo ? (
-        <Image src={p.logo} alt="" width={48} height={48} densities={[1, 2]} class="logo" />
+        <Image src={p.logo} alt="" width={48} height={48} densities={[1, 2]} class="logo" style={logoVt} />
       ) : p.cover ? null : (
-        <span class="logo logo-fallback" aria-hidden="true">
+        <span class="logo logo-fallback" aria-hidden="true" style={logoVt}>
           {p.name.slice(0, 1)}
         </span>
       )

@@ -27,14 +27,17 @@ const { message, telegramUrl, fallback, vcardHref, vcardFilename, shareUrl, shar
   {
     telegramUrl ? (
       <>
-        <a class="btn btn-primary btn-lg btn-block" href={telegramUrl} rel="noopener" data-telegram>
+        <a class="btn btn-primary btn-lg btn-block shine" href={telegramUrl} rel="noopener" data-telegram>
           <Icon name="telegram" size={22} />
           <span>Contact Me</span>
         </a>
         <p class="hint">
           Opens Telegram with a message ready to send.
           <button type="button" class="btn-text" data-copy={message} data-copied-label="Message copied — paste it in Telegram">
-            <Icon name="copy" />
+            <span class="swap" aria-hidden="true">
+              <Icon name="copy" class="i-copy" />
+              <Icon name="check" class="i-check" />
+            </span>
             Copy message
           </button>
         </p>
@@ -63,7 +66,7 @@ const { message, telegramUrl, fallback, vcardHref, vcardFilename, shareUrl, shar
     </button>
   </div>
 
-  <p class="status" role="status" aria-live="polite" data-status></p>
+  <p class="toast" role="status" aria-live="polite" data-status></p>
 </div>
 
 <script>
@@ -92,24 +95,33 @@ const { message, telegramUrl, fallback, vcardHref, vcardFilename, shareUrl, shar
     }
   }
 
-  function announce(root: Element, text: string) {
-    const status = root.querySelector<HTMLElement>('[data-status]');
+  function announce(status: HTMLElement | null, text: string) {
     if (!status) return;
+    status.classList.remove('visible');
     status.textContent = text;
-    status.classList.add('visible');
+    // Next frame so the pop-in transition replays even for repeated messages.
+    requestAnimationFrame(() => requestAnimationFrame(() => status.classList.add('visible')));
     window.clearTimeout(Number(status.dataset.timer));
-    status.dataset.timer = String(
-      window.setTimeout(() => {
-        status.classList.remove('visible');
-      }, 3200),
-    );
+    status.dataset.timer = String(window.setTimeout(() => status.classList.remove('visible'), 2800));
+  }
+
+  function flashDone(button: HTMLElement) {
+    button.dataset.done = '';
+    window.clearTimeout(Number(button.dataset.timer));
+    button.dataset.timer = String(window.setTimeout(() => delete button.dataset.done, 2000));
   }
 
   document.querySelectorAll('[data-contact]').forEach((root) => {
+    // Fixed-position toast must live outside the card (its backdrop-filter
+    // would otherwise make the card the toast's containing block).
+    const status = root.querySelector<HTMLElement>('[data-status]');
+    if (status) document.body.append(status);
+
     root.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
       button.addEventListener('click', async () => {
         const ok = await copyText(button.dataset.copy ?? '');
-        announce(root, ok ? (button.dataset.copiedLabel ?? 'Copied') : 'Could not copy — please copy manually.');
+        if (ok) flashDone(button);
+        announce(status, ok ? (button.dataset.copiedLabel ?? 'Copied') : 'Could not copy — please copy manually.');
       });
     });
 
@@ -126,7 +138,7 @@ const { message, telegramUrl, fallback, vcardHref, vcardFilename, shareUrl, shar
           }
         }
         const ok = await copyText(url);
-        announce(root, ok ? 'Link copied' : url);
+        announce(status, ok ? 'Link copied' : url);
       });
     });
   });
@@ -160,21 +172,54 @@ const { message, telegramUrl, fallback, vcardHref, vcardFilename, shareUrl, shar
     padding-inline: 12px;
     white-space: nowrap;
   }
-  .status {
-    min-height: 0;
-    margin: 0;
-    text-align: center;
-    font-size: var(--text-sm);
-    font-weight: 550;
-    color: var(--success);
-    opacity: 0;
-    transform: translateY(-4px);
-    transition:
-      opacity var(--dur) var(--ease),
-      transform var(--dur) var(--ease);
+  /* Copy icon turns into a check mark after copying. */
+  .swap {
+    position: relative;
+    display: inline-grid;
+    width: 18px;
+    height: 18px;
   }
-  .status:global(.visible) {
+  .swap :global(svg) {
+    grid-area: 1 / 1;
+    transition:
+      opacity 160ms var(--ease),
+      transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .swap :global(.i-check) {
+    opacity: 0;
+    transform: scale(0.4) rotate(-20deg);
+    color: var(--success);
+  }
+  [data-done] .swap :global(.i-copy) {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  [data-done] .swap :global(.i-check) {
     opacity: 1;
     transform: none;
+  }
+
+  /* A single light sweep across Contact Me shortly after the page opens. */
+  .shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .shine::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.35) 50%, transparent 70%);
+      transform: translateX(-120%);
+      animation: shine 1100ms var(--ease) 900ms 1 both;
+      pointer-events: none;
+    }
+    @keyframes shine {
+      to {
+        transform: translateX(120%);
+      }
+    }
   }
 </style>

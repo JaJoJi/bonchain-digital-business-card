@@ -266,6 +266,7 @@ button {
 /* ---------- Motion ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
+  /* Entrance for content visible on load. */
   .rise {
     animation: rise 600ms var(--ease) both;
     animation-delay: calc(var(--i, 0) * 60ms);
@@ -276,6 +277,88 @@ button {
       transform: translateY(10px);
     }
   }
+  html[data-vt] .rise {
+    animation: none;
+  }
+
+  /* Reveal on scroll for content below the fold (CSS scroll-driven
+     animations; browsers without support simply show the content). */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+      }
+    }
+  }
+
+  /* ----- Page transitions (cross-document View Transitions) -----
+     Same-origin navigations crossfade; the header stays put, the active
+     nav pill slides, and member photos morph between list and profile.
+     Unsupported browsers navigate normally. */
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-old(root) {
+    animation: 180ms var(--ease) both vt-fade-out;
+  }
+  ::view-transition-new(root) {
+    animation: 320ms var(--ease) 60ms both vt-fade-in;
+  }
+  ::view-transition-group(*) {
+    animation-duration: 420ms;
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @keyframes vt-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes vt-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+/* ---------- Toast (copy / share feedback) ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  z-index: 50;
+  max-width: calc(100vw - 32px);
+  margin: 0;
+  padding: 12px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 14px 30px -10px rgb(14 26 43 / 0.5);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 16px) scale(0.92);
+  transition:
+    opacity 200ms var(--ease),
+    transform 200ms var(--ease);
+}
+.toast.visible {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  transition:
+    opacity 220ms var(--ease),
+    transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.toast:empty {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

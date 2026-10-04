@@ -18,6 +18,7 @@ import {
   getProjects,
   getSite,
   memberPath,
+  photoTransition,
   telegramContactUrl,
   vcardPath,
   type Member,
@@ -97,7 +98,7 @@ const description = `${m.role} at ${site.name}. ${m.headline ?? m.bio ?? ''}`.tr
 >
   <div class="container profile">
     <section class="card-glass identity rise" aria-labelledby="member-name">
-      <Avatar name={m.name} src={m.avatar} size={112} eager class="photo" />
+      <Avatar name={m.name} src={m.avatar} size={112} eager class="photo" transitionName={photoTransition(member.id)} />
       <div class="who">
         <h1 id="member-name">{m.name}</h1>
         {
@@ -136,14 +137,14 @@ const description = `${m.role} at ${site.name}. ${m.headline ?? m.bio ?? ''}`.tr
     </section>
 
     <div class="details">
-      <section aria-labelledby="links-title" class="rise" style="--i:1">
+      <section aria-labelledby="links-title" class="reveal">
         <h2 id="links-title" class="eyebrow">Connect</h2>
         <SocialLinks member={m} />
       </section>
 
       {
         m.bio && (
-          <section aria-labelledby="about-title" class="rise" style="--i:2">
+          <section aria-labelledby="about-title" class="reveal">
             <h2 id="about-title" class="eyebrow">About</h2>
             <p class="bio">{m.bio}</p>
           </section>
@@ -152,16 +153,16 @@ const description = `${m.role} at ${site.name}. ${m.headline ?? m.bio ?? ''}`.tr
 
       {
         projects.length > 0 && (
-          <section aria-labelledby="projects-title" class="rise" style="--i:3">
+          <section aria-labelledby="projects-title" class="reveal">
             <h2 id="projects-title" class="eyebrow">Projects with the {site.name} team</h2>
             <ul class="projects">
               {projects.map((p) => (
                 <li>
                   <a href={`/projects#${p.id}`} class="project">
                     {p.data.logo ? (
-                      <Image src={p.data.logo} alt="" width={44} height={44} densities={[1, 2]} class="project-logo" />
+                      <Image src={p.data.logo} alt="" width={44} height={44} densities={[1, 2]} class="project-logo" style={`view-transition-name: project-logo-${p.id}`} />
                     ) : (
-                      <span class="project-logo project-logo-fallback" aria-hidden="true">
+                      <span class="project-logo project-logo-fallback" aria-hidden="true" style={`view-transition-name: project-logo-${p.id}`}>
                         {p.data.name.slice(0, 1)}
                       </span>
                     )}
@@ -187,7 +188,7 @@ const description = `${m.role} at ${site.name}. ${m.headline ?? m.bio ?? ''}`.tr
         )
       }
 
-      <aside class="network-cta rise" style="--i:4">
+      <aside class="network-cta reveal">
         <p>
           <strong>{first} is part of the {site.name} network.</strong>
           <span class="muted"> Meet the rest of the community.</span>

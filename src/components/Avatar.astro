@@ -8,12 +8,15 @@ interface Props {
   src?: ImageMetadata;
   /** Rendered size in CSS pixels. */
   size: number;
+  /** Shared-element name so the photo morphs between pages (must be unique per page). */
+  transitionName?: string;
   /** Above-the-fold avatars (profile header) load eagerly. */
   eager?: boolean;
   class?: string;
 }
 
-const { name, src, size, eager = false, class: className } = Astro.props;
+const { name, src, size, transitionName, eager = false, class: className } = Astro.props;
+const vt = transitionName ? `;view-transition-name:${transitionName}` : '';
 
 // Deterministic sky-toned gradient per name for the initials fallback.
 let hash = 0;
@@ -33,12 +36,12 @@ const hue = 205 + (hash % 30); // 205–235: blue range
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : 'auto'}
       class:list={['avatar', className]}
-      style={`--size:${size}px`}
+      style={`--size:${size}px${vt}`}
     />
   ) : (
     <span
       class:list={['avatar', 'avatar-fallback', className]}
-      style={`--size:${size}px;--hue:${hue}`}
+      style={`--size:${size}px;--hue:${hue}${vt}`}
       role="img"
       aria-label={name}
     >

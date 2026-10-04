@@ -1,7 +1,7 @@
 ---
 import Avatar from './Avatar.astro';
 import Icon from './Icon.astro';
-import { memberPath, type Member } from '../lib/data';
+import { memberPath, photoTransition, type Member } from '../lib/data';
 
 interface Props {
   member: Member;
@@ -13,7 +13,7 @@ const m = member.data;
 
 <li class="member rise" style={`--i:${Math.min(index, 8)}`} data-member data-search={`${m.name} ${m.nickname ?? ''} ${m.role} ${m.headline ?? ''}`.toLowerCase()}>
   <a href={memberPath(member.id)} class="card member-card">
-    <Avatar name={m.name} src={m.avatar} size={64} />
+    <Avatar name={m.name} src={m.avatar} size={64} transitionName={photoTransition(member.id)} />
     <span class="text">
       <span class="name">
         {m.name}

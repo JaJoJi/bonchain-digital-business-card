@@ -26,6 +26,8 @@ export async function getProjects(): Promise<Project[]> {
 
 /** Canonical URL path for a member. This is what QR codes point to. */
 export const memberPath = (slug: string) => `/members/${slug}`;
+/** View-transition name shared by a member's photo on every page. */
+export const photoTransition = (slug: string) => `member-photo-${slug}`;
 export const vcardPath = (slug: string) => `/members/${slug}.vcf`;
 
 /**

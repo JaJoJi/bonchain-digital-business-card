@@ -1,7 +1,7 @@
 ---
 /** "Built by the whole team" avatar row, linking to each member. */
 import Avatar from './Avatar.astro';
-import { callName, memberPath, type Member } from '../lib/data';
+import { callName, memberPath, photoTransition, type Member } from '../lib/data';
 
 interface Props {
   members: Member[];
@@ -17,7 +17,7 @@ const { members, label = 'Built together by the whole team' } = Astro.props;
         {members.map((m) => (
           <li>
             <a href={memberPath(m.id)} title={m.data.name}>
-              <Avatar name={m.data.name} src={m.data.avatar} size={40} />
+              <Avatar name={m.data.name} src={m.data.avatar} size={40} transitionName={photoTransition(m.id)} />
               <span class="visually-hidden">{m.data.name}</span>
             </a>
           </li>
