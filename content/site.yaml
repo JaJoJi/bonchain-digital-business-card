@@ -1,0 +1,57 @@
+# Site-wide content for the Bonchain Digital Network.
+# Everything here is public. Edit, commit, push — Vercel rebuilds the site.
+#
+# NOTE: The canonical domain is NOT set here. It comes from the SITE_URL
+# environment variable in Vercel (see README).
+
+name: Bonchain
+tagline: From the cloud, across the network.
+description: >-
+  Bonchain is a blockchain builder community spun out of Bonmek.
+  Meet our members, see what we're building and connect in one tap.
+
+# Short paragraph on the home page.
+intro: >-
+  We're a community of engineers and builders working on blockchain products,
+  infrastructure and research. Find the person you just met, see what they
+  work on and say hello on Telegram.
+
+# Paragraphs on the About page.
+about:
+  - >-
+    Bonchain is a blockchain community that grew out of Bonmek. We bring
+    together developers, researchers and product builders who want to ship
+    real things on-chain.
+  - >-
+    We started from the cloud — Bonmek's roots — and now we're building
+    connections across the network: between people, projects and ecosystems.
+
+focus:
+  - title: Build
+    text: >-
+      Shipping real products on-chain — including PactDa, 3rd place in the
+      Explorations track at Sui Overflow 2025.
+  - title: Learn
+    text: Workshops, research and sharing what we learn along the way.
+  - title: Connect
+    text: >-
+      Hosting Beercamp, a networking event for blockchain developers in Hat Yai,
+      and meeting builders at events like Sui Basecamp.
+
+origin:
+  name: Bonmek
+  # url: https://bonmek.example
+  text: Bonchain was spun out of Bonmek to focus on blockchain.
+
+socials:
+  github: BonChain
+  # telegram: bonchain
+  # x: bonchain
+
+event:
+  name: Sui Basecamp 2026
+  location: Singapore
+  showBadge: true
+  # Pre-filled (never auto-sent) when someone taps "Contact Me".
+  # Members can override this with contactMessageOverride.
+  contactMessage: "Hey! 👋 We met at Sui Basecamp 2026. Great meeting you — let's stay connected!"

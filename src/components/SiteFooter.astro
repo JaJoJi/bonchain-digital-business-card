@@ -1,0 +1,102 @@
+---
+import BrandMark from './BrandMark.astro';
+import Icon, { type IconName } from './Icon.astro';
+import { getSite } from '../lib/data';
+import { profileUrls } from '../lib/social';
+
+const site = await getSite();
+const s = site.socials;
+const socials: { href: string; label: string; icon: IconName }[] = [];
+if (s.telegram) socials.push({ href: profileUrls.telegram(s.telegram), label: 'Telegram', icon: 'telegram' });
+if (s.x) socials.push({ href: profileUrls.x(s.x), label: 'X', icon: 'x' });
+if (s.github) socials.push({ href: profileUrls.github(s.github), label: 'GitHub', icon: 'github' });
+if (s.linkedin) socials.push({ href: s.linkedin, label: 'LinkedIn', icon: 'linkedin' });
+if (s.website) socials.push({ href: s.website, label: 'Website', icon: 'globe' });
+---
+
+<footer class="site-footer">
+  <div class="container inner">
+    <div class="brand">
+      <BrandMark size={22} />
+      <p class="muted">{site.tagline}</p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="/members">Members</a>
+      <a href="/projects">Projects</a>
+      <a href="/about">About</a>
+    </nav>
+    {
+      socials.length > 0 && (
+        <ul class="socials" aria-label={`${site.name} on social media`}>
+          {socials.map((x) => (
+            <li>
+              <a href={x.href} target="_blank" rel="noopener" aria-label={x.label}>
+                <Icon name={x.icon} size={18} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+  <div class="container legal">
+    <p>
+      {`© ${new Date().getFullYear()} ${site.name}`}{site.origin && ` · Spun out of ${site.origin.name}`}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 48px;
+    border-top: 1px solid var(--line);
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    font-size: var(--text-sm);
+  }
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 32px;
+    padding-block: 28px 12px;
+  }
+  .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  nav {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  nav a,
+  .socials a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0 10px;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+  }
+  nav a:hover,
+  .socials a:hover {
+    color: var(--brand-strong);
+    background: var(--brand-soft);
+  }
+  .socials {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .legal {
+    color: var(--ink-3);
+    font-size: var(--text-xs);
+  }
+</style>

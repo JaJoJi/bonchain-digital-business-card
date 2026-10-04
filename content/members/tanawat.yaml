@@ -1,0 +1,24 @@
+# The file name ("tanawat") is the permanent URL: /members/tanawat
+# Never rename a file after QR codes are printed.
+
+name: Tanawat Palaboon
+nickname: Tenny
+role: Senior Developer
+headline: Founder & Smart Contract Lead at Ritarena
+bio: >-
+  Built enterprise systems for $1B+ organisations (Government Pension Fund,
+  BDMS), then moved into Web3 as a Solana builder. Hackathon winner with
+  PactDa, built AI agent tooling with Mushin, and now leads Ritarena.
+avatar: ./avatars/tanawat.jpg
+
+telegram: ten852456
+x: tenny2201
+github: ten852456
+# linkedin: https://www.linkedin.com/in/...
+# website: https://...
+
+# Optional and opt-in only.
+# email: name@example.com
+# phone: "+66 ..."
+
+order: 1

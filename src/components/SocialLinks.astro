@@ -1,0 +1,126 @@
+---
+/** Link-in-bio style list of a member's public links. */
+import Icon, { type IconName } from './Icon.astro';
+import type { Member } from '../lib/data';
+import { displayUrl, profileUrls } from '../lib/social';
+
+interface Props {
+  member: Member['data'];
+}
+const { member: m } = Astro.props;
+
+type Row = { href: string; label: string; value: string; icon: IconName; external: boolean };
+const rows: Row[] = [];
+if (m.telegram) rows.push({ href: profileUrls.telegram(m.telegram), label: 'Telegram', value: `@${m.telegram}`, icon: 'telegram', external: true });
+if (m.linkedin) rows.push({ href: m.linkedin, label: 'LinkedIn', value: displayUrl(m.linkedin).replace(/^linkedin\.com\//, ''), icon: 'linkedin', external: true });
+if (m.github) rows.push({ href: profileUrls.github(m.github), label: 'GitHub', value: `@${m.github}`, icon: 'github', external: true });
+if (m.x) rows.push({ href: profileUrls.x(m.x), label: 'X', value: `@${m.x}`, icon: 'x', external: true });
+if (m.website) rows.push({ href: m.website, label: 'Website', value: displayUrl(m.website), icon: 'globe', external: true });
+if (m.email) rows.push({ href: `mailto:${m.email}`, label: 'Email', value: m.email, icon: 'mail', external: false });
+if (m.phone) rows.push({ href: `tel:${m.phone.replace(/[^\d+]/g, '')}`, label: 'Phone', value: m.phone, icon: 'phone', external: false });
+---
+
+{
+  rows.length > 0 && (
+    <ul class="links">
+      {rows.map((row) => (
+        <li>
+          <a
+            href={row.href}
+            target={row.external ? '_blank' : undefined}
+            rel={row.external ? 'noopener' : undefined}
+            class={`row row-${row.icon}`}
+          >
+            <span class="tile">
+              <Icon name={row.icon} size={20} />
+            </span>
+            <span class="text">
+              <span class="label">{row.label}</span>
+              <span class="value">{row.value}</span>
+            </span>
+            <Icon name="arrow-up-right" size={18} class="arrow" />
+            {row.external && <span class="visually-hidden">(opens in a new tab)</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 64px;
+    padding: 10px 16px 10px 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    color: var(--ink);
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
+  }
+  .row:hover {
+    border-color: var(--brand);
+  }
+  .row:active {
+    transform: scale(0.99);
+  }
+  .tile {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border-radius: 12px;
+    background: var(--brand-soft);
+    color: var(--brand-strong);
+  }
+  .row-telegram .tile {
+    background: #e3f2fd;
+    color: #229ed9;
+  }
+  .row-linkedin .tile {
+    background: #e8f0fa;
+    color: #0a66c2;
+  }
+  .row-github .tile,
+  .row-x .tile {
+    background: #eef0f3;
+    color: #111;
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    line-height: 1.3;
+  }
+  .label {
+    font-weight: 600;
+    font-size: var(--text-sm);
+  }
+  .value {
+    color: var(--ink-3);
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .row :global(.arrow) {
+    color: var(--ink-3);
+    flex: none;
+  }
+</style>

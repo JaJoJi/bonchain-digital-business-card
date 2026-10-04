@@ -1,0 +1,18 @@
+# File name = URL anchor (/projects#pactda). Every member is shown on every project.
+name: PactDa
+kind: product
+summary: >-
+  Smart-contract agreements that make digital deals simple, secure and
+  transparent.
+description: >-
+  An agreement platform built on smart contracts, with zkLogin onboarding,
+  SUI escrow automation and multichain support.
+logo: ./logos/pactda.png
+tags: [Sui, Move, zkLogin, Escrow]
+awards:
+  - title: 3rd Place · Explorations Track · Sui Overflow 2025
+    url: https://www.sui.io/blog/2025-sui-overflow-hackathon-winners
+links:
+  github: https://github.com/Bonmek/pactda
+  x: PactdaOfficial
+order: 1

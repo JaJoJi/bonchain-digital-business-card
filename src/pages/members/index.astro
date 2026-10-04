@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MemberCard from '../../components/MemberCard.astro';
+import { getMembers, getSite } from '../../lib/data';
+
+const site = await getSite();
+const members = await getMembers();
+---
+
+<BaseLayout
+  title="Members"
+  description={`Meet the people of ${site.name}. Find someone you met and connect in one tap.`}
+  skyHeight="min(44vh, 380px)"
+>
+  <div class="container page">
+    <header class="page-head rise">
+      <p class="eyebrow">Directory</p>
+      <h1>Members</h1>
+      <p class="muted lead">Find the person you just met and connect in one tap.</p>
+    </header>
+
+    {
+      members.length > 0 ? (
+        <>
+          {members.length > 6 && (
+            <div class="search">
+              <label for="member-search" class="visually-hidden">
+                Search members
+              </label>
+              <input id="member-search" type="search" placeholder="Search by name or role" autocomplete="off" data-member-search />
+            </div>
+          )}
+          <ul class="grid" data-member-list>
+            {members.map((member, i) => (
+              <MemberCard member={member} index={i} />
+            ))}
+          </ul>
+          <p class="empty" hidden data-member-empty>
+            No members match your search.
+          </p>
+        </>
+      ) : (
+        <p class="empty">Members will appear here soon.</p>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('[data-member-search]');
+  const empty = document.querySelector<HTMLElement>('[data-member-empty]');
+  input?.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let shown = 0;
+    document.querySelectorAll<HTMLElement>('[data-member]').forEach((el) => {
+      const match = !q || (el.dataset.search ?? '').includes(q);
+      el.hidden = !match;
+      if (match) shown++;
+    });
+    if (empty) empty.hidden = shown > 0;
+  });
+</script>
+
+<style>
+  .page {
+    padding-top: clamp(16px, 5vw, 56px);
+  }
+  .page-head {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: var(--text-2xl);
+  }
+  .lead {
+    max-width: 52ch;
+  }
+  .search {
+    margin-bottom: 16px;
+  }
+  .search input {
+    width: 100%;
+    max-width: 420px;
+    min-height: var(--tap);
+    padding: 0 18px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    font: inherit;
+    font-size: 16px; /* prevents iOS zoom on focus */
+    color: var(--ink);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+  }
+  .empty {
+    padding: 32px 0;
+    color: var(--ink-3);
+  }
+  [hidden] {
+    display: none !important;
+  }
+</style>

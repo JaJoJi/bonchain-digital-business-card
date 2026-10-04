@@ -1,0 +1,73 @@
+/*
+ * Design tokens — the single place to change the visual identity.
+ *
+ * TEMPORARY BRAND: "Sky + Clouds + Network". When final Bonchain / Bonmek
+ * colours arrive, update the Brand and Sky groups below; components only
+ * reference these variables.
+ */
+:root {
+  color-scheme: light;
+
+  /* Brand */
+  --brand: #1f5bff;
+  --brand-strong: #1546d1;
+  --brand-soft: #e7eeff;
+  --brand-ink: #ffffff;           /* text on --brand */
+  --accent: #ffb25c;              /* "sunrise" — use sparingly */
+  --accent-soft: #fff1df;
+  --accent-ink: #7a4100;
+
+  /* Sky */
+  --sky-1: #8fbaff;               /* top of the sky */
+  --sky-2: #c4dbff;
+  --sky-3: #e9f2ff;
+  --cloud: #ffffff;
+  --network: #2d5fd9;             /* nodes + lines (used at low opacity) */
+
+  /* Neutrals */
+  --bg: #f5f8fe;
+  --surface: #ffffff;
+  --surface-glass: rgb(255 255 255 / 0.84);
+  --ink: #0e1a2b;
+  --ink-2: #3f4f66;
+  --ink-3: #5c6b80;
+  --line: rgb(14 26 43 / 0.09);
+  --line-strong: rgb(14 26 43 / 0.16);
+
+  /* Feedback */
+  --success: #0f7a4b;
+
+  /* Type */
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.5rem, 1.2rem + 1.2vw, 1.875rem);
+  --text-2xl: clamp(1.875rem, 1.4rem + 2vw, 2.5rem);
+  --text-hero: clamp(2.5rem, 1.6rem + 4.4vw, 4.75rem);
+
+  /* Shape */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgb(16 40 90 / 0.06), 0 2px 8px -2px rgb(16 40 90 / 0.06);
+  --shadow-card: 0 1px 2px rgb(16 40 90 / 0.05), 0 18px 40px -18px rgb(20 60 150 / 0.28);
+  --shadow-brand: 0 10px 24px -10px rgb(31 91 255 / 0.65);
+
+  /* Layout */
+  --tap: 48px;
+  --gutter: clamp(16px, 4vw, 32px);
+  --content: 1120px;
+  --header-h: 64px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur: 180ms;
+}

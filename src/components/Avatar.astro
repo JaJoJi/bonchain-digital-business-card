@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { initials } from '../lib/data';
+
+interface Props {
+  name: string;
+  src?: ImageMetadata;
+  /** Rendered size in CSS pixels. */
+  size: number;
+  /** Above-the-fold avatars (profile header) load eagerly. */
+  eager?: boolean;
+  class?: string;
+}
+
+const { name, src, size, eager = false, class: className } = Astro.props;
+
+// Deterministic sky-toned gradient per name for the initials fallback.
+let hash = 0;
+for (const ch of name) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+const hue = 205 + (hash % 30); // 205–235: blue range
+---
+
+{
+  src ? (
+    <Image
+      src={src}
+      alt={name}
+      width={size}
+      height={size}
+      densities={[1, 2]}
+      fit="cover"
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+      class:list={['avatar', className]}
+      style={`--size:${size}px`}
+    />
+  ) : (
+    <span
+      class:list={['avatar', 'avatar-fallback', className]}
+      style={`--size:${size}px;--hue:${hue}`}
+      role="img"
+      aria-label={name}
+    >
+      {initials(name)}
+    </span>
+  )
+}
+
+<style>
+  .avatar {
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    object-fit: cover;
+    flex: none;
+    background: var(--sky-3);
+  }
+  .avatar-fallback {
+    display: inline-grid;
+    place-items: center;
+    color: #fff;
+    font-weight: 650;
+    font-size: calc(var(--size) * 0.36);
+    letter-spacing: -0.02em;
+    background:
+      radial-gradient(circle at 30% 25%, hsl(var(--hue) 100% 82%) 0%, transparent 55%),
+      linear-gradient(145deg, hsl(var(--hue) 90% 62%), hsl(calc(var(--hue) + 10) 85% 44%));
+    user-select: none;
+  }
+</style>

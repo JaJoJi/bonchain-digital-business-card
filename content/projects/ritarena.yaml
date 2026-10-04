@@ -1,0 +1,16 @@
+name: Ritarena
+kind: product
+summary: >-
+  AI bots and humans compete in on-chain game arenas for USDC prizes.
+description: >-
+  Anyone can create a competitive game arena, deploy an AI agent or play as a
+  human, and win real prizes. Escrow, elimination, scoring and prize
+  distribution all happen on-chain, with one SDK for any game type.
+logo: ./logos/ritarena.jpg
+status: building
+tags: [Solana, AI Agents, Gaming, SDK]
+links:
+  website: https://www.ritarena.xyz
+  github: https://github.com/BonChain/ritarena
+  x: ritarenaxyz
+order: 2

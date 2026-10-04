@@ -1,0 +1,75 @@
+---
+/** "Built by the whole team" avatar row, linking to each member. */
+import Avatar from './Avatar.astro';
+import { callName, memberPath, type Member } from '../lib/data';
+
+interface Props {
+  members: Member[];
+  label?: string;
+}
+const { members, label = 'Built together by the whole team' } = Astro.props;
+---
+
+{
+  members.length > 0 && (
+    <div class="team">
+      <ul class="faces" aria-label="Team members">
+        {members.map((m) => (
+          <li>
+            <a href={memberPath(m.id)} title={m.data.name}>
+              <Avatar name={m.data.name} src={m.data.avatar} size={40} />
+              <span class="visually-hidden">{m.data.name}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p>
+        <strong>{label}</strong>
+        <span class="muted">{members.map((m) => callName(m.data)).join(' · ')}</span>
+      </p>
+    </div>
+  )
+}
+
+<style>
+  .team {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+    padding: 14px 18px;
+    border-radius: var(--radius-lg);
+    background: rgb(255 255 255 / 0.7);
+    border: 1px solid rgb(255 255 255 / 0.9);
+    box-shadow: var(--shadow-sm);
+  }
+  .faces {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 10px;
+  }
+  .faces li {
+    margin-left: -10px;
+  }
+  .faces a {
+    display: block;
+    border-radius: 50%;
+    transition: transform var(--dur) var(--ease);
+  }
+  .faces a:hover {
+    transform: translateY(-2px);
+    position: relative;
+    z-index: 1;
+  }
+  .faces :global(.avatar) {
+    border: 3px solid #fff;
+  }
+  p {
+    display: grid;
+    gap: 2px;
+    font-size: var(--text-sm);
+    line-height: 1.35;
+  }
+</style>

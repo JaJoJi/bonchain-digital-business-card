@@ -1,0 +1,46 @@
+---
+/**
+ * TEMPORARY Bonchain mark: a cloud (Bonmek's origin) carrying a small network.
+ * Replace this file's SVG with the final logo when it is available.
+ */
+interface Props {
+  size?: number;
+  withWordmark?: boolean;
+  class?: string;
+}
+const { size = 32, withWordmark = true, class: className } = Astro.props;
+---
+
+<span class:list={['brandmark', className]}>
+  <svg viewBox="0 0 40 32" width={size * 1.25} height={size} aria-hidden="true" focusable="false">
+    <g fill="var(--brand)">
+      <circle cx="13" cy="17" r="7"></circle>
+      <circle cx="22" cy="13" r="9"></circle>
+      <circle cx="30.5" cy="19" r="6"></circle>
+      <rect x="6" y="17" width="30.5" height="9" rx="4.5"></rect>
+    </g>
+    <g stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.95">
+      <path d="M13 20.5 21.5 14 29 21" fill="none"></path>
+    </g>
+    <g fill="#fff">
+      <circle cx="13" cy="20.5" r="2.4"></circle>
+      <circle cx="21.5" cy="14" r="2.4"></circle>
+      <circle cx="29" cy="21" r="2.4"></circle>
+    </g>
+  </svg>
+  {withWordmark && <span class="wordmark">Bonchain</span>}
+</span>
+
+<style>
+  .brandmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink);
+  }
+  .wordmark {
+    font-weight: 700;
+    font-size: 1.125rem;
+    letter-spacing: -0.03em;
+  }
+</style>

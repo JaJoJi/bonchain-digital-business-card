@@ -1,0 +1,27 @@
+name: Beercamp
+kind: event
+summary: >-
+  A networking night for the tech and developer community in Hat Yai, hosted
+  by Bonchain right after BarCamp Songkhla 10.
+description: >-
+  Held on 28 February 2026. After a day of talks on the BarCamp Songkhla
+  stage, builders, students and developers kept the conversation going over
+  food and drinks. Meet. Share. Connect.
+cover: ./gallery/beercamp/01.jpg
+coverAlt: Group photo of Beercamp attendees around a table, with the Beercamp banner
+# Tapping the cover opens these photos. Add more files and list them here.
+gallery:
+  - src: ./gallery/beercamp/01.jpg
+    alt: Group photo of Beercamp attendees around a table, with the Beercamp banner
+  - src: ./gallery/beercamp/02.jpg
+    alt: Attendees serving themselves from a table of pizza and snacks
+  - src: ./gallery/beercamp/03.jpg
+    alt: Three attendees sitting together, smiling and giving a thumbs up
+  - src: ./gallery/beercamp/04.jpg
+    alt: A group of developers around a table with food and drinks
+  - src: ./gallery/beercamp/05.jpg
+    alt: Attendees lined up in front of the windows, giving thumbs up
+tags: [Community, Networking, Hat Yai]
+links:
+  facebook: https://www.facebook.com/share/p/19UY5DNQAr/
+order: 3

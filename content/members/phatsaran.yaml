@@ -1,0 +1,27 @@
+# The file name ("phatsaran") is the permanent URL: /members/phatsaran
+# Never rename a file after QR codes are printed.
+
+name: Phatsaran Saeoui
+nickname: JJ
+role: Full stack Blockchain Developer
+headline: Building on Sui
+# TODO(JJ): placeholder bio — rewrite in your own words.
+bio: >-
+  Full-stack developer focused on Move smart contracts and the products
+  around them. Happy to talk about Sui, developer tooling and shipping fast.
+# location: Hat Yai, Thailand
+avatar: ./avatars/phatsaran.jpg
+
+telegram: JAJOJI17
+x: JaJoJi_JJ
+github: JaJoJi
+# linkedin: https://www.linkedin.com/in/...
+# website: https://...
+
+# Optional and opt-in only. Leave commented out unless you want these
+# public — they are added to the downloadable contact card.
+# email: name@example.com
+# phone: "+66 81 234 5678"
+
+# contactMessageOverride: "Hi! Great to meet you at Sui Basecamp 2026."
+order: 2

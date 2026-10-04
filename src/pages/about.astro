@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EventBadge from '../components/EventBadge.astro';
+import Icon from '../components/Icon.astro';
+import { getSite } from '../lib/data';
+
+const site = await getSite();
+---
+
+<BaseLayout title="About" description={site.description} skyHeight="min(44vh, 380px)">
+  <article class="container page">
+    <header class="page-head rise">
+      <p class="eyebrow">About</p>
+      <h1>{site.name}</h1>
+      <p class="lead">{site.tagline}</p>
+    </header>
+
+    <div class="body rise" style="--i:1">
+      {site.about.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+
+    {
+      site.focus.length > 0 && (
+        <section aria-labelledby="focus-title" class="rise" style="--i:2">
+          <h2 id="focus-title" class="eyebrow">What we focus on</h2>
+          <ul class="focus">
+            {site.focus.map((f) => (
+              <li class="card">
+                <h3>{f.title}</h3>
+                <p class="muted">{f.text}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      site.origin && (
+        <section aria-labelledby="origin-title" class="origin card rise" style="--i:3">
+          <h2 id="origin-title" class="eyebrow">Where we come from</h2>
+          <p>{site.origin.text}</p>
+          {site.origin.url && (
+            <a href={site.origin.url} target="_blank" rel="noopener" class="btn-text">
+              Visit {site.origin.name} <Icon name="arrow-up-right" />
+              <span class="visually-hidden">(opens in a new tab)</span>
+            </a>
+          )}
+        </section>
+      )
+    }
+
+    <section aria-labelledby="event-title" class="event rise" style="--i:4">
+      <h2 id="event-title" class="eyebrow">Meet us</h2>
+      <EventBadge />
+      <p class="muted">
+        Met one of us at the event? Find them in the directory and say hello on Telegram.
+      </p>
+      <a href="/members" class="btn btn-primary">
+        Find a member <Icon name="arrow-right" />
+      </a>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .page {
+    max-width: calc(760px + 2 * var(--gutter));
+    padding-top: clamp(16px, 5vw, 56px);
+    display: grid;
+    gap: 40px;
+  }
+  .page-head {
+    display: grid;
+    gap: 8px;
+  }
+  h1 {
+    font-size: var(--text-2xl);
+  }
+  .lead {
+    font-size: var(--text-lg);
+    color: var(--ink-2);
+  }
+  .body {
+    display: grid;
+    gap: 16px;
+    font-size: var(--text-md);
+    color: var(--ink-2);
+  }
+  section {
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+  }
+  .focus {
+    width: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 12px;
+  }
+  .focus li {
+    padding: 20px;
+    display: grid;
+    gap: 6px;
+    align-content: start;
+  }
+  .focus h3 {
+    font-size: var(--text-md);
+  }
+  .focus p {
+    font-size: var(--text-sm);
+  }
+  .origin {
+    padding: 24px;
+    width: 100%;
+  }
+</style>

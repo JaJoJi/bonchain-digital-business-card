@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import TeamStrip from '../../components/TeamStrip.astro';
+import { getMembers, getProjects, getSite } from '../../lib/data';
+
+const site = await getSite();
+const projects = await getProjects();
+const members = await getMembers();
+---
+
+<BaseLayout
+  title="Projects"
+  description={`Products and events from the ${site.name} community: ${projects.map((p) => p.data.name).join(", ")}.`}
+  skyHeight="min(44vh, 380px)"
+>
+  <div class="container page">
+    <header class="page-head rise">
+      <p class="eyebrow">Work</p>
+      <h1>Projects</h1>
+      <p class="muted lead">What the {site.name} community builds, ships and hosts.</p>
+    </header>
+
+    <div class="team-wrap rise" style="--i:1">
+      <TeamStrip members={members} label={`Every project is built by the whole ${site.name} team`} />
+    </div>
+
+    {
+      projects.length > 0 ? (
+        <ul class="grid">
+          {projects.map((project, i) => (
+            <ProjectCard project={project} detailed index={i} />
+          ))}
+        </ul>
+      ) : (
+        <p class="empty">Projects will appear here soon.</p>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-top: clamp(16px, 5vw, 56px);
+  }
+  .page-head {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: var(--text-2xl);
+  }
+  .lead {
+    max-width: 52ch;
+  }
+  .team-wrap {
+    margin-bottom: 20px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+  }
+  .empty {
+    padding: 32px 0;
+    color: var(--ink-3);
+  }
+</style>

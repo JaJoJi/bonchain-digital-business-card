@@ -1,0 +1,95 @@
+---
+import Avatar from './Avatar.astro';
+import Icon from './Icon.astro';
+import { memberPath, type Member } from '../lib/data';
+
+interface Props {
+  member: Member;
+  index?: number;
+}
+const { member, index = 0 } = Astro.props;
+const m = member.data;
+---
+
+<li class="member rise" style={`--i:${Math.min(index, 8)}`} data-member data-search={`${m.name} ${m.nickname ?? ''} ${m.role} ${m.headline ?? ''}`.toLowerCase()}>
+  <a href={memberPath(member.id)} class="card member-card">
+    <Avatar name={m.name} src={m.avatar} size={64} />
+    <span class="text">
+      <span class="name">
+        {m.name}
+        {m.nickname && <span class="nick">{` (${m.nickname})`}</span>}
+      </span>
+      <span class="role">{m.role}</span>
+      {m.headline && <span class="headline">{m.headline}</span>}
+    </span>
+    <span class="meta">
+      {m.telegram && <Icon name="telegram" size={16} label="On Telegram" class="tg" />}
+      <Icon name="arrow-right" size={18} class="arrow" />
+    </span>
+  </a>
+</li>
+
+<style>
+  .member {
+    list-style: none;
+  }
+  .member-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 100%;
+    padding: 16px;
+    color: var(--ink);
+    text-decoration: none;
+    transition:
+      transform var(--dur) var(--ease),
+      border-color var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+  .member-card:hover {
+    border-color: rgb(31 91 255 / 0.4);
+    transform: translateY(-2px);
+  }
+  .member-card:active {
+    transform: scale(0.99);
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+    line-height: 1.35;
+  }
+  .name {
+    font-weight: 650;
+    font-size: var(--text-md);
+    letter-spacing: -0.01em;
+  }
+  .nick {
+    font-weight: 500;
+    color: var(--ink-3);
+  }
+  .role {
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+  }
+  .headline {
+    color: var(--ink-3);
+    font-size: var(--text-xs);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink-3);
+  }
+  .meta :global(.tg) {
+    color: #229ed9;
+  }
+</style>

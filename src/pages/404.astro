@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<BaseLayout title="Page not found" noindex skyHeight="min(60vh, 520px)">
+  <div class="container page rise">
+    <p class="eyebrow">404 · Lost in the clouds</p>
+    <h1>We couldn't find that page.</h1>
+    <p class="muted">
+      If you scanned someone's QR code, their profile may have moved. You can find them in the member
+      directory.
+    </p>
+    <div class="ctas">
+      <a href="/members" class="btn btn-primary btn-lg">
+        Browse members <Icon name="arrow-right" />
+      </a>
+      <a href="/" class="btn btn-secondary btn-lg">Go home</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+    max-width: calc(640px + 2 * var(--gutter));
+    padding-top: clamp(32px, 10vw, 120px);
+    padding-bottom: 48px;
+  }
+  h1 {
+    font-size: var(--text-2xl);
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+  }
+</style>

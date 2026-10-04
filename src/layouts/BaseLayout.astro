@@ -1,0 +1,93 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SkyBackground from '../components/SkyBackground.astro';
+import { cleanPath, getSite } from '../lib/data';
+
+interface Props {
+  /** Page title without the site suffix. Omit on the home page. */
+  title?: string;
+  description?: string;
+  /** Absolute or root-relative image URL for social previews. */
+  image?: string;
+  imageAlt?: string;
+  /** "summary" for square images (avatars), "summary_large_image" for 1200×630. */
+  twitterCard?: 'summary' | 'summary_large_image';
+  ogType?: 'website' | 'profile';
+  noindex?: boolean;
+  skyHeight?: string;
+  network?: boolean;
+  jsonLd?: Record<string, unknown>;
+}
+
+const site = await getSite();
+const {
+  title,
+  description = site.description,
+  image = '/og-default.png',
+  imageAlt = `${site.name} — ${site.tagline}`,
+  twitterCard = 'summary_large_image',
+  ogType = 'website',
+  noindex = false,
+  skyHeight,
+  network,
+  jsonLd,
+} = Astro.props;
+
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.tagline}`;
+const canonical = new URL(cleanPath(Astro.url.pathname), Astro.site).toString();
+const imageUrl = new URL(image, Astro.site).toString();
+const robots = noindex || !__INDEXABLE__ ? 'noindex, nofollow' : 'index, follow';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={robots} />
+    <meta name="theme-color" content="#8fbaff" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content={twitterCard} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <SkyBackground height={skyHeight} network={network} />
+    <SiteHeader />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  body {
+    position: relative;
+    isolation: isolate;
+  }
+  main:focus {
+    outline: none;
+  }
+</style>

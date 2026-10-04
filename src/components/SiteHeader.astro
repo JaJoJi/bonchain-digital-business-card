@@ -1,0 +1,96 @@
+---
+import BrandMark from './BrandMark.astro';
+import { cleanPath } from '../lib/data';
+
+const links = [
+  { href: '/members', label: 'Members' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/about', label: 'About' },
+];
+const path = cleanPath(Astro.url.pathname);
+const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a href="/" class="home" aria-label="Bonchain home">
+      <BrandMark size={26} />
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    padding-top: env(safe-area-inset-top);
+  }
+  .bar {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .home {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+  }
+  ul {
+    display: flex;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 4px;
+    background: rgb(255 255 255 / 0.55);
+    border: 1px solid rgb(255 255 255 / 0.8);
+    border-radius: var(--radius-pill);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+    font-weight: 550;
+    text-decoration: none;
+    transition:
+      background-color var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+  nav a:hover {
+    color: var(--ink);
+    background: rgb(255 255 255 / 0.7);
+  }
+  nav a[aria-current='page'] {
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+  }
+  @media (max-width: 400px) {
+    .home :global(.wordmark) {
+      display: none;
+    }
+    nav a {
+      padding: 0 12px;
+    }
+  }
+</style>

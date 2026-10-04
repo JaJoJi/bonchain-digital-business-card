@@ -1,0 +1,55 @@
+---
+import { getSite } from '../lib/data';
+
+interface Props {
+  prefix?: string;
+}
+const { prefix } = Astro.props;
+const { event } = await getSite();
+---
+
+{
+  event.showBadge && (
+    <p class="event-badge">
+      <span class="dot" aria-hidden="true" />
+      <span>
+        {prefix && <span class="prefix">{prefix} </span>}
+        <strong>{event.name}</strong>
+        {event.location && <span class="loc"> · {event.location}</span>}
+      </span>
+    </p>
+  )
+}
+
+<style>
+  .event-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    font-size: var(--text-xs);
+    line-height: 1.3;
+  }
+  strong {
+    font-weight: 650;
+    white-space: nowrap;
+  }
+  .loc {
+    white-space: nowrap;
+  }
+  @media (max-width: 380px) {
+    .prefix {
+      display: none;
+    }
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgb(255 178 92 / 0.3);
+  }
+</style>
